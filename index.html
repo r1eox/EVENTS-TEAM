@@ -302,6 +302,7 @@
       const totalCountElem = document.getElementById('totalCount');
       const duplicateAlertElem = document.getElementById('duplicateAlert');
       const authorName = document.getElementById('authorName').value.trim();
+      const excludedOutOfServiceRoleMention = '<@&1135000856278880330>';
 
       if (!input.trim()) {
         document.getElementById('outputData').value = '';
@@ -351,13 +352,6 @@
         });
 
         if (data.id) {
-          processedCount++;
-          
-          let rawKey = data.id.replace(/[^a-zA-Z0-9_.-]/g, '').toLowerCase().trim();
-          if (rawKey) {
-            idTracker[rawKey] = (idTracker[rawKey] || 0) + 1;
-          }
-
           const cleanRank = cleanAndStandardizeRank(data.rank);
           const hasResponsibilities = checkIfHasResponsibilities(data.respEval);
 
@@ -367,6 +361,17 @@
 
           const chosenEval = data.finalEval || data.rawEval;
           const finalRating = normalizeEval(chosenEval, totalPoints);
+
+          if (finalRating === 'خارج خدمة' && data.id.includes(excludedOutOfServiceRoleMention)) {
+            return;
+          }
+
+          processedCount++;
+
+          let rawKey = data.id.replace(/[^a-zA-Z0-9_.-]/g, '').toLowerCase().trim();
+          if (rawKey) {
+            idTracker[rawKey] = (idTracker[rawKey] || 0) + 1;
+          }
 
           // تصنيف الإحصائيات
           if (finalRating === 'جديد') {
