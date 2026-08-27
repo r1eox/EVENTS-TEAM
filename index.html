@@ -417,7 +417,7 @@
 
           const shouldMentionOutOfServiceRole = finalRating === 'خارج خدمة' || isOutOfServiceRole || hasOutOfServiceInText;
           const roleMentionForOutput = detectedRoleMention || outOfServiceRoleMention;
-          let formattedMention = shouldMentionOutOfServiceRole ? `${roleMentionForOutput}\u00A0` : formatUserMention(data.id);
+          let formattedMention = formatUserMention(data.id);
           const evaluationOutput = shouldMentionOutOfServiceRole ? roleMentionForOutput : finalRating;
           result += `${formattedMention}\nالتقييم : ${evaluationOutput}\nالرتبة الادارية : ${cleanRank}\n${lineSeparator}\n`;
         }
