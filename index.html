@@ -304,6 +304,10 @@
       const authorName = document.getElementById('authorName').value.trim();
       const outOfServiceRoleId = '1135000856278880330';
       const outOfServiceRoleMention = `<@&${outOfServiceRoleId}>`;
+      const hasOutOfServiceRoleMention = (text) => {
+        if (!text) return false;
+        return text.includes(outOfServiceRoleMention) || text.includes(outOfServiceRoleId);
+      };
 
       if (!input.trim()) {
         document.getElementById('outputData').value = '';
@@ -361,7 +365,11 @@
           const totalPoints = sectionRes.points + respPoints;
 
           const chosenEval = data.finalEval || data.rawEval;
-          const isOutOfServiceRole = data.id.includes(outOfServiceRoleMention) || data.id.includes(outOfServiceRoleId);
+          const isOutOfServiceRole =
+            hasOutOfServiceRoleMention(data.id) ||
+            hasOutOfServiceRoleMention(data.finalEval) ||
+            hasOutOfServiceRoleMention(data.rawEval) ||
+            hasOutOfServiceRoleMention(data.respEval);
           let finalRating = normalizeEval(chosenEval, totalPoints);
 
           if (isOutOfServiceRole) {
