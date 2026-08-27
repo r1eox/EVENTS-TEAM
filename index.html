@@ -394,7 +394,8 @@
             countActive++;
           }
 
-          let formattedMention = isOutOfServiceRole ? `${outOfServiceRoleMention}\u00A0` : formatUserMention(data.id);
+          const shouldMentionOutOfServiceRole = finalRating === 'خارج خدمة' || isOutOfServiceRole;
+          let formattedMention = shouldMentionOutOfServiceRole ? `${outOfServiceRoleMention}\u00A0` : formatUserMention(data.id);
           result += `${formattedMention}\nالتقييم : ${finalRating}\nالرتبة الادارية : ${cleanRank}\n${lineSeparator}\n`;
         }
       });
