@@ -220,7 +220,8 @@
       let clean = removeFancyFont(rawRank);
 
       const standardRanks = [
-        "Supervisor", "Mod", "Admin", "Super Admin", "Head Admin",
+        // Keep specific composite ranks before generic ones like Admin.
+        "Super Admin", "Head Admin", "Supervisor", "Mod", "Admin",
         "Controller", "Hand of the king", "Pre Master", "Master", "Advisor",
         "Operator", "Marshal", "Manager", "Director", "Executive",
         "President", "Commander", "Mythical", "Colonel", "Boss",
