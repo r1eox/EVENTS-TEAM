@@ -302,7 +302,8 @@
       const totalCountElem = document.getElementById('totalCount');
       const duplicateAlertElem = document.getElementById('duplicateAlert');
       const authorName = document.getElementById('authorName').value.trim();
-      const excludedOutOfServiceRoleMention = '<@&1135000856278880330>';
+      const outOfServiceRoleId = '1135000856278880330';
+      const outOfServiceRoleMention = `<@&${outOfServiceRoleId}>`;
 
       if (!input.trim()) {
         document.getElementById('outputData').value = '';
@@ -360,10 +361,11 @@
           const totalPoints = sectionRes.points + respPoints;
 
           const chosenEval = data.finalEval || data.rawEval;
-          const finalRating = normalizeEval(chosenEval, totalPoints);
+          const isOutOfServiceRole = data.id.includes(outOfServiceRoleMention) || data.id.includes(outOfServiceRoleId);
+          let finalRating = normalizeEval(chosenEval, totalPoints);
 
-          if (finalRating === 'خارج خدمة' && data.id.includes(excludedOutOfServiceRoleMention)) {
-            return;
+          if (isOutOfServiceRole) {
+            finalRating = 'خارج خدمة';
           }
 
           processedCount++;
@@ -384,7 +386,7 @@
             countActive++;
           }
 
-          let formattedMention = formatUserMention(data.id);
+          let formattedMention = isOutOfServiceRole ? `${outOfServiceRoleMention}\u00A0` : formatUserMention(data.id);
           result += `${formattedMention}\nالتقييم : ${finalRating}\nالرتبة الادارية : ${cleanRank}\n${lineSeparator}\n`;
         }
       });
